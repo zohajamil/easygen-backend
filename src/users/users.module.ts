@@ -20,10 +20,3 @@ import { AuthModule } from 'src/auth/auth.module';
   exports: [UsersService],
 })
 export class UsersModule {}
-// implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer
-//       .apply(VerifyTokenMiddleware)
-//       .forRoutes({ path: 'users', method: RequestMethod.GET });
-//   }
-// }
