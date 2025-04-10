@@ -13,21 +13,21 @@ import { UsersService } from './users.service';
 import { AuthenticateUserRequestDto } from './dto/req/authenticate-user.req.dto';
 import { AuthenticatedUserResponseDto } from './dto/res/authenticated-user.res.dto';
 import { CreateUserRequestDto } from './dto/req/create-user.req.dto';
-import { User } from './entities/user.entity';
 import { ValidateSessionResponseDto } from './dto/res/validate-session.res.dto';
 import { DeleteSessionResponseDto } from './dto/res/delete-session.res.dto';
+import { DeleteUserRequestDto } from './dto/req/delete-user.req.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // Sign up
   @Post()
   async signUp(
     @Res() response,
     @Body() createUserDto: CreateUserRequestDto,
   ): Promise<AuthenticatedUserResponseDto> {
     try {
-      console.log(createUserDto);
       const data = await this.usersService.signUp(createUserDto);
       return response.status(HttpStatus.OK).send(data);
     } catch (error) {
@@ -35,6 +35,7 @@ export class UsersController {
     }
   }
 
+  // Login
   @Post('/authenticate')
   async authenticate(
     @Res() response,
@@ -48,10 +49,15 @@ export class UsersController {
     }
   }
 
-  @Get()
-  async getUser(@Res() response): Promise<User> {
+  // Delete user (added this for testing only)
+  @Delete()
+  async deleteUser(
+    @Res() response,
+    @Body() deleteUserDto: DeleteUserRequestDto,
+  ): Promise<AuthenticatedUserResponseDto> {
     try {
-      return response.status(HttpStatus.OK).send(response.locals.user);
+      const data = await this.usersService.deleteUser(deleteUserDto.email);
+      return response.status(HttpStatus.OK).send(data);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

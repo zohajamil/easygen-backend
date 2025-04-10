@@ -106,4 +106,24 @@ export class UsersRepository {
       throw new InternalServerErrorException(error.message);
     }
   }
+
+  async deleteUser(email: string): Promise<boolean> {
+    try {
+      Logger.log('Deleting user');
+
+      const result = await this.userModel.deleteOne({ email: email });
+      Logger.log(`Modified count: ${result.deletedCount}`);
+
+      return result.deletedCount > 0 ? true : false;
+    } catch (error) {
+      Logger.error(
+        'user.repository',
+        'deleteUser',
+        error.message,
+        error.stack,
+        '',
+      );
+      throw new InternalServerErrorException(error.message);
+    }
+  }
 }

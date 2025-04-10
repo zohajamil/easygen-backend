@@ -93,7 +93,7 @@ export class UsersService {
 
   async findUserSession(sessionId: string) {
     try {
-      const user = this.userRepository.findUserSession(sessionId);
+      const user = await this.userRepository.findUserSession(sessionId);
       if (!user) {
         throw new HttpException(
           'User session expired',
@@ -112,7 +112,7 @@ export class UsersService {
 
   async deleteUserSession(sessionId: string) {
     try {
-      const deleted = this.userRepository.deleteUserSession(sessionId);
+      const deleted = await this.userRepository.deleteUserSession(sessionId);
       if (!deleted) {
         throw new HttpException(
           'User session expired',
@@ -123,6 +123,19 @@ export class UsersService {
     } catch (error) {
       this.loggingService.create({
         description: `Error while deleting user session - ${error.message}.`,
+        isError: true,
+      });
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async deleteUser(email: string) {
+    try {
+      await this.userRepository.deleteUser(email);
+      return true;
+    } catch (error) {
+      this.loggingService.create({
+        description: `Error while deleting user - ${error.message}.`,
         isError: true,
       });
       throw new InternalServerErrorException(error.message);
