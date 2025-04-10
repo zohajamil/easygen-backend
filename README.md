@@ -80,9 +80,11 @@ src/
 ├── app.service.ts
 ```
 
-## ✅ Features
+## ✅ Features & Security
 - User Signup / Signin
 - Session storage in MongoDB
 - AES encryption for userId and expiration time (1 hour) for generating token
 - Decrytion of payload and checking expiration time for session handling
 - CORS restricted to frontend URL for security
+- Used bcrypt for password hashing
+- Used crypto package for AES encryption
